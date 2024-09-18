@@ -16,7 +16,7 @@
 Начните с импорта модуля Requests: import requests
 
 ```python
->>>import requests
+import requests
 ```
 
 Теперь попробуем получить веб-страницу. Для этого примера давайте возьмем общедоступную временную шкалу GitHub:
