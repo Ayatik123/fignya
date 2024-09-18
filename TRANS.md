@@ -157,7 +157,7 @@ from io import BytesIO
 i = Image.open(BytesIO(r.content))
 
 
-                                                                                                                     СДЕЛАТЬ ЗАПРОС¶
+                                                                                                                     #СДЕЛАТЬ ЗАПРОС¶
                                                                                                                      
 Сделать запрос с помощью Requests очень просто.
 
@@ -180,7 +180,7 @@ r = requests.options('https://httpbin.org/get')
 
 Это все хорошо, но это только начало того, на что способны Requests.
 
-                                                                                                                  TIMEOUTS
+                                                                                                                  #TIMEOUTS
 
 Вы можете указать Requests прекратить ожидание ответа через заданное количество секунд с помощью параметра timeout. Почти весь производственный код должен использовать этот параметр почти во всех запросах. Невыполнение этого требования может привести к зависанию вашей программы на неопределенный срок:
 
@@ -192,7 +192,7 @@ requests.exceptions.Timeout: HTTPConnectionPool(host='github.com', port=80): Req
 Примечание
 таймаут не является ограничением по времени на всю загрузку ответа; скорее, исключение возникает, если сервер не выдал ответ в течение таймаута (точнее, если в базовый сокет не было получено ни одного байта в течение таймаута). Если тайм-аут не указан явно, время ожидания запросов не истекает.
 
-                                                                                                                 ERRORS AND EXCEPTIONS
+                                                                                                                 #ERRORS AND EXCEPTIONS
                                                                                                                  
                                                                                                                  
  В случае возникновения сетевой проблемы (например, сбоя DNS, отказа в соединении и т. д.) запросы вызовут исключение ConnectionError.
@@ -514,7 +514,7 @@ Response.raise_for_status()вызовет исключение HTTPError, есл
 
 
 
-Redirection and History¶
+#Redirection and History¶
                                                                                                         
                                                                                                         
 По умолчанию запросы будут выполнять перенаправление местоположения для всех команд, кроме HEAD.
@@ -582,6 +582,10 @@ payload = {'key1': 'value1', 'key2': ['value2', 'value3']}
 r = requests.get('https://httpbin.org/get', params=payload)
 print(r.url)
 https://httpbin.org/get?key1=value1&key2=value2&key2=value3
+
+
+
+
 
 
 
