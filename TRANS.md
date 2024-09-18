@@ -462,5 +462,90 @@ r.headers.get('content-type')
 Его особенностью также является то, что сервер мог отправить один и тот же заголовок несколько раз с разными значениями, но запросы объединяют их, чтобы они могли быть представлены в словаре в одном сопоставлении, согласно RFC 7230 :
 
 Получатель МОЖЕТ объединить несколько полей заголовка с одинаковым именем поля в одну пару «имя-поля: значение-поля», не меняя семантику сообщения, путем добавления каждого последующего значения поля к объединенному значению поля по порядку, разделенному запятой.
+Файлы cookie 
+Если ответ содержит файлы cookie, вы можете быстро получить к ним доступ:
+
+url = 'http://example.com/some/cookie/setting/url'
+r = requests.get(url)
+
+r.cookies['example_cookie_name']
+'example_cookie_value'
+Чтобы отправить собственные файлы cookie на сервер, вы можете использовать cookiesпараметр:
+
+url = 'https://httpbin.org/cookies'
+cookies = dict(cookies_are='working')
+
+r = requests.get(url, cookies=cookies)
+r.text
+'{"cookies": {"cookies_are": "working"}}'
+Файлы cookie возвращаются в RequestsCookieJar, который действует как , dictно также предлагает более полный интерфейс, подходящий для использования в нескольких доменах или путях. Файлы cookie также могут быть переданы в запросы:
+
+jar = requests.cookies.RequestsCookieJar()
+jar.set('tasty_cookie', 'yum', domain='httpbin.org', path='/cookies')
+jar.set('gross_cookie', 'blech', domain='httpbin.org', path='/elsewhere')
+url = 'https://httpbin.org/cookies'
+r = requests.get(url, cookies=jar)
+r.text
+'{"cookies": {"tasty_cookie": "yum"}}'
+Перенаправление и история 
+По умолчанию Requests будет выполнять перенаправление местоположения для всех глаголов, кроме HEAD.
+
+Мы можем использовать historyсвойство объекта Response для отслеживания перенаправления.
+
+Список Response.historyсодержит Responseобъекты, которые были созданы для выполнения запроса. Список отсортирован от самого старого до самого последнего ответа.
+
+Например, GitHub перенаправляет все HTTP-запросы на HTTPS:
+
+r = requests.get('http://github.com/')
+
+r.url
+'https://github.com/'
+
+r.status_code
+200
+
+r.history
+[<Response [301]>]
+Если вы используете GET, OPTIONS, POST, PUT, PATCH или DELETE, вы можете отключить обработку перенаправления с помощью allow_redirectsпараметра:
+
+r = requests.get('http://github.com/', allow_redirects=False)
+
+r.status_code
+301
+
+r.history
+[]
+Если вы используете HEAD, вы также можете включить перенаправление:
+
+r = requests.head('http://github.com/', allow_redirects=True)
+
+r.url
+'https://github.com/'
+
+r.history
+[<Response [301]>]
+Тайм-ауты 
+Вы можете указать Requests прекратить ожидание ответа через заданное количество секунд с помощью timeoutпараметра. Почти весь производственный код должен использовать этот параметр почти во всех запросах. Невыполнение этого требования может привести к зависанию программы на неопределенный срок:
+
+requests.get('https://github.com/', timeout=0.001)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+requests.exceptions.Timeout: HTTPConnectionPool(host='github.com', port=80): Request timed out. (timeout=0.001)
+Примечание
+timeoutне является ограничением по времени на всю загрузку ответа; скорее, исключение возникает, если сервер не выдал ответ в течение timeoutсекунд (точнее, если на базовый сокет не было получено ни одного байта в течение timeoutсекунд). Если тайм-аут явно не указан, запросы не будут истекать по времени.
+
+Ошибки и исключения 
+В случае возникновения сетевых проблем (например, сбоя DNS, отказа в подключении и т. д.) запросы вызовут исключение ConnectionError.
+
+Response.raise_for_status()вызовет исключение HTTPError, если HTTP-запрос вернул код состояния неудачи.
+
+Если время запроса истекло, Timeoutвозникает исключение.
+
+Если запрос превышает настроенное максимальное количество перенаправлений, TooManyRedirectsвозникает исключение.
+
+Все исключения, которые явно вызывает Requests, наследуются от requests.exceptions.RequestException.
+
+Готовы к большему? Ознакомьтесь с расширенным разделом.
+
 
 
