@@ -24,6 +24,15 @@ requests.get('https://httpbin.org/basic-auth/user/pass', auth=('user', 'pass')) 
 
 Если учетные данные для имени хоста найдены, запрос отправляется с помощью HTTP Basic Auth.
 
+# Дайджест-аутентификация
+
+Другой очень популярной формой HTTP-аутентификации является дайджест-аутентификация, и Requests также поддерживает ее «из коробки»:
+
+>>>   from requests.auth import HTTPDigestAuth
+>>>   url = 'https://httpbin.org/digest-auth/auth/user/pass'
+>>>   requests.get(url, auth=HTTPDigestAuth('user', 'pass'))
+<Response [200]>
+
 # Перевод текста
 Мы можем прочитать содержимое ответа сервера. Взгляните еще раз на временную шкалу GitHub:
 
