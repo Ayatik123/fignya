@@ -549,3 +549,55 @@ Response.raise_for_status()вызовет исключение HTTPError, есл
 
 
 
+Redirection and History¶
+                                                                                                        
+                                                                                                        
+По умолчанию запросы будут выполнять перенаправление местоположения для всех команд, кроме HEAD.
+
+Мы можем использовать свойство истории объекта Response для отслеживания перенаправления.
+
+Список Response.history содержит объекты Response, созданные для выполнения запроса. Список отсортирован от самого старого ответа до самого последнего.
+
+Например, GitHub перенаправляет все HTTP-запросы на HTTPS:
+
+r = requests.get('http://github.com/')
+
+r.url
+'https://github.com/'
+
+r.status_code
+200
+
+r.history
+[<Response [301]>]
+
+
+
+Если вы используете GET, OPTIONS, POST, PUT, PATCH или DELETE, вы можете отключить обработку перенаправления с помощью параметраallow_redirects:
+
+
+r = requests.get('http://github.com/', allow_redirects=False)
+
+r.status_code
+301
+
+r.history
+[]
+
+
+Если вы используете HEAD, вы также можете включить перенаправление:
+
+
+r = requests.head('http://github.com/', allow_redirects=True)
+
+r.url
+'https://github.com/'
+
+r.history
+[<Response [301]>] (Солонченко Кирилл)
+
+
+
+
+
+
