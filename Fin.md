@@ -90,3 +90,4 @@ b'[{"repository":{"open_issues":0,"url":"https://github.com/...
 
 >>> i = Image.open(BytesIO(r.content))
 ```
+_**Лимур**_
