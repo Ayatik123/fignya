@@ -238,6 +238,6 @@ Response.raise_for_status() вызовет HTTPError, если HTTP-запрос
 
 Если запрос превышает настроенное максимальное количество перенаправлений, возникает исключение TooManyRedirects.
 
-Все исключения, которые Requests явно вызывает, наследуют от Requests.Exceptions.RequestException.(Солонченко Кирилл)
+Все исключения, которые Requests явно вызывает, наследуют от Requests.Exceptions.RequestException.
 
 
