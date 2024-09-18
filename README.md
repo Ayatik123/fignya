@@ -101,3 +101,68 @@ from PIL import Image
 from io import BytesIO
 
 i = Image.open(BytesIO(r.content))
+Quickstart 
+Хотите начать? Эта страница дает хорошее введение в то, как начать работу с Requests.
+
+Во-первых, убедитесь, что:
+
+Запросы установлены
+
+Запросы актуальны
+
+Давайте начнем с простых примеров.
+
+Сделать запрос 
+Сделать запрос с помощью Requests очень просто.
+
+Начните с импорта модуля «Запросы»:
+import requests
+Now, let’s try to get a webpage. For this example, let’s get GitHub’s public timeline:
+
+r = requests.get('https://api.github.com/events')
+Now, we have a Response object called r. We can get all the information we need from this object.
+
+Requests’ simple API means that all forms of HTTP request are as obvious. For example, this is how you make an HTTP POST request:
+
+r = requests.post('https://httpbin.org/post', data={'key': 'value'})
+Nice, right? What about the other HTTP request types: PUT, DELETE, HEAD and OPTIONS? These are all just as simple:
+
+r = requests.put('https://httpbin.org/put', data={'key': 'value'})
+r = requests.delete('https://httpbin.org/delete')
+r = requests.head('https://httpbin.org/get')
+r = requests.options('https://httpbin.org/get')
+Это все хорошо, но это только начало того, что может сделать Requests.
+
+Передача параметров в URL-адресах 
+Часто требуется отправить какие-то данные в строке запроса URL. Если бы вы создавали URL вручную, эти данные были бы указаны в виде пар ключ/значение в URL после вопросительного знака, например httpbin.org/get?key=val. Requests позволяет вам предоставлять эти аргументы в виде словаря строк, используя paramsаргумент ключевого слова. Например, если вы хотите передать key1=value1и key2=value2в httpbin.org/get, вы бы использовали следующий код:
+payload = {'key1': 'value1', 'key2': 'value2'}
+r = requests.get('https://httpbin.org/get', params=payload)
+You can see that the URL has been correctly encoded by printing the URL:
+
+print(r.url)
+https://httpbin.org/get?key2=value2&key1=value1
+Note that any dictionary key whose value is None will not be added to the URL’s query string.
+
+You can also pass a list of items as a value:
+
+payload = {'key1': 'value1', 'key2': ['value2', 'value3']}
+
+r = requests.get('https://httpbin.org/get', params=payload)
+print(r.url)
+https://httpbin.org/get?key1=value1&key2=value2&key2=value3
+
+
+Response Content****
+
+Мы можем прочитать содержимое ответа сервера. Рассмотрим еще раз временную шкалу GitHub:
+Запросы будут автоматически декодировать контент с сервера. Большинство наборов символов Unicode легко декодируются.
+
+Когда вы делаете запрос, Requests делает обоснованные предположения о кодировке ответа на основе заголовков HTTP. Кодировка текста, угаданная Requests, используется при доступе к r.text. Вы можете узнать, какую кодировку использует Requests, и изменить ее, используя r.encodingсвойство:
+Если вы измените кодировку, запросы будут использовать новое значение r.encodingвсякий раз, когда вы вызываете r.text. Вы можете захотеть сделать это в любой ситуации, когда вы можете применить специальную логику для определения того, какой будет кодировка содержимого. Например, HTML и XML имеют возможность указывать свою кодировку в своем теле. В таких ситуациях вы должны использовать , r.contentчтобы найти кодировку, а затем установить r.encoding. Это позволит вам использовать r.textс правильной кодировкой.
+
+Запросы также будут использовать пользовательские кодировки, если они вам понадобятся. Если вы создали собственную кодировку и зарегистрировали ее в codecsмодуле, вы можете просто использовать имя кодека в качестве значения, r.encodingи Запросы обработают декодирование за вас.
+Binary Response Content
+Вы также можете получить доступ к телу ответа в виде байтов для нетекстовых запросов:
+
+Binary Response Content
+
